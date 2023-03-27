@@ -25,6 +25,23 @@
     console.log(window.parent?.siyuan?.config?.lang, curLang, lang);
 
     const SNIPPET_NAME = 'plugin-system-bazzar';
+    const content = `(async () => {
+        window.pluginSystemSource = 'bazzar';
+        const response = await fetch('/api/file/getFile', {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+            body: JSON.stringify({ path: '/data/widgets/插件系统/plugin.js' }),
+        });
+        const js = await response.text();
+        eval(js);
+    })()`;
     const request = async (url, body) => {
         const response = await fetch(url, {
             method: "POST",
@@ -86,37 +103,22 @@
         if (snippet.type !== 'js') {
             continue;
         }
-        if (snippet.name === SNIPPET_NAME) {
-            snippet.enabled = true;
-            await request('/api/snippet/setSnippet', { snippets });
-            await showMessage(lang['BAZZAR_EXIST']);
-            showEnd();
-            return;
-        }
         if (snippet.content.indexOf('https://gitee.com/zuoez02/siyuan-plugin-system/raw/main/main.js') !== -1) {
             await showMessage(lang['OLD_LOADER_EXIST']);
             await showMessage(snippet.content, 'pre', 10);
             snippet.enabled = false;
         }
+        if (snippet.name === SNIPPET_NAME) {
+            snippet.enabled = true;
+            snippet.content = content;
+            await request('/api/snippet/setSnippet', { snippets });
+            await showMessage(lang['BAZZAR_EXIST']);
+            showEnd();
+            return;
+        }
     }
     await showMessage(lang['GENRATE_NEW_SNIPPET']);
-    const content = `(async () => {
-        const response = await fetch('/api/file/getFile', {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            redirect: "follow",
-            referrerPolicy: "no-referrer",
-            body: JSON.stringify({ path: '/data/widgets/plugin-system/plugin.js' }),
-        });
-        const js = await response.text();
-        eval(js);
-    })()
-    `;
+    
     await showMessage(content, 'pre', 10);
     snippets.splice(0, 0, {
         id: '20230324100959-plugind',
@@ -128,5 +130,5 @@
     await request('/api/snippet/setSnippet', { snippets });
     await showMessage(lang['SUCCESS_INJECTED']);
     showEnd();
-
+    setTimeout(() => window.parent.location.reload(), 1000);
 })();
