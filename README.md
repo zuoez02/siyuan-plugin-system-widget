@@ -1,6 +1,6 @@
 # 插件系统集市版 Plugin System Bazzar version.
 
-v0.5.0
+v0.6.0
 
 ## 使用方法 Usage
 
