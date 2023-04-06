@@ -9,3 +9,9 @@ v0.6.0
 Download the widget. Add the widget named '插件系统' to use. Wait for program inject success. Reload the SiYuan.
 
 See origin plugin system on [Github](https://github.com/zuoez02/siyuan-plugin-system) or [Gitee](https://gitee.com/zuoez02/siyuan-plugin-system).
+
+## 支持我 Support me
+
+![image](https://user-images.githubusercontent.com/4801955/230420945-02452a12-8922-4cf0-9555-8822b204f853.png)
+
+[请我喝杯可乐吧](https://afdian.net/a/zuoez02)
